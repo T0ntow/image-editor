@@ -7,12 +7,16 @@ import { HomePage } from './home.page';
 import { HomePageRoutingModule } from './home-routing.module';
 
 
+import { NgxFileDropModule } from 'ngx-file-drop';
+
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    HomePageRoutingModule
+    HomePageRoutingModule,
+    NgxFileDropModule
   ],
   declarations: [HomePage]
 })

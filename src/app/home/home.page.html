@@ -4,23 +4,30 @@
 
 <ion-content [fullscreen]="true">
 
-  <ion-title>
-    Faça upload de uma imagem para começar
-  </ion-title>
-
-  <div id="upload-box">
-    <img src="assets/file-upload.png" alt="">
-
-    <div>
-
-      <button>
-        <ion-icon name="cloud-upload-outline"></ion-icon>
-        Faça Upload
-      </button>
-
-      <span>ou arrate uma imagem</span>
+  <section id="section-upload">
+    <ion-title>
+      Faça upload de uma imagem para começar
+    </ion-title>
+    <div id="upload-box">
+      <img src="assets/file-upload.png" alt="">
+      <div>
+        <ion-label>Selecione uma imagem</ion-label>
+        <input type="file" (change)="onFileSelected($event)" accept="image/*" />
+      </div>
     </div>
+  </section>
 
-  </div>
+  <section *ngIf="imageUrl" >
+    <ion-title>
+      Preview
+    </ion-title>
+
+    <div id="preview">
+      <!-- <img *ngIf="imageUrl" [src]="imageUrl"></img> -->
+      <img *ngIf="imageUrl" [src]="imageUrl" alt="">
+    </div>
+  </section>
+
+
 
 </ion-content>
