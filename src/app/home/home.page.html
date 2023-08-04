@@ -3,30 +3,26 @@
 </style>
 
 <ion-content [fullscreen]="true">
+  <div id="header">
+    <h1>Faça upload de uma imagem para começar</h1>
 
-  <section id="section-upload">
-    <ion-title>
-      Faça upload de uma imagem para começar
-    </ion-title>
-    <div id="upload-box">
-      <img src="assets/file-upload.png" alt="">
-      <div>
-        <ion-label>Selecione uma imagem</ion-label>
-        <input type="file" (change)="onFileSelected($event)" accept="image/*" />
-      </div>
+    <ion-button (click)="fileInput.click()">
+      Selecionar Imagem
+    </ion-button>
+
+    <input type="file" style="display: none" accept="image/*" #fileInput (change)="fileChangeEvent($event)" />
+  </div>
+
+  <div #stageContainer class="canvas-container"></div>
+
+  <div id="menu">
+    <div class="item">
+      <ion-label position="floating">Digite um nome</ion-label>
+      <ion-input [(ngModel)]="textToAdd"></ion-input>
     </div>
-  </section>
-
-  <section *ngIf="imageUrl" >
-    <ion-title>
-      Preview
-    </ion-title>
-
-    <div id="preview">
-      <!-- <img *ngIf="imageUrl" [src]="imageUrl"></img> -->
-      <img *ngIf="imageUrl" [src]="imageUrl" alt="">
-    </div>
-  </section>
+  
+    <ion-button (click)="applyTextToImage()">Aplicar Nome</ion-button>
+  </div>
 
 
 

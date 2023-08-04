@@ -9,7 +9,6 @@ import { HomePageRoutingModule } from './home-routing.module';
 
 import { NgxFileDropModule } from 'ngx-file-drop';
 
-
 @NgModule({
   imports: [
     CommonModule,
