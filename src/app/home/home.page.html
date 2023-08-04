@@ -2,28 +2,90 @@
   @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 </style>
 
-<ion-content [fullscreen]="true">
-  <div id="header">
+<main>
+  <ion-header id="header">
     <h1>Faça upload de uma imagem para começar</h1>
-
     <ion-button (click)="fileInput.click()">
       Selecionar Imagem
     </ion-button>
 
     <input type="file" style="display: none" accept="image/*" #fileInput (change)="fileChangeEvent($event)" />
+  </ion-header>
+
+  <!-- TOP MENU -->
+
+  <div id="top-menu">
+    <ion-item>
+      <ion-label>Font Size</ion-label>
+      <ion-input type="number" [(ngModel)]="selectedFontSize"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Font Family</ion-label>
+      <ion-select [(ngModel)]="selectedFontFamily">
+        <ion-select-option value="Arial">Arial</ion-select-option>
+        <ion-select-option value="Verdana">Verdana</ion-select-option>
+        <ion-select-option value="Times New Roman">Times New Roman</ion-select-option>
+        <!-- Adicione outras opções de fonte aqui -->
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Text Color</ion-label>
+      <ion-color-picker [(ngModel)]="selectedTextColor"></ion-color-picker>
+    </ion-item>
+
+    <ion-button (click)="editTextAttrs()">Aplicar</ion-button>
+
+    <ion-item>
+      <ion-label position="floating">Width (pixels)</ion-label>
+      <ion-input type="number" [(ngModel)]="imageWidth"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Height (pixels)</ion-label>
+      <ion-input type="number" [(ngModel)]="imageHeight"></ion-input>
+    </ion-item>
+
+    <ion-button class="button-edit" (click)="resizeImage()">Resize Image</ion-button>
+
   </div>
 
-  <div #stageContainer class="canvas-container"></div>
-
+  <!-- LATERAL MENU -->
   <div id="menu">
-    <div class="item">
-      <ion-label position="floating">Digite um nome</ion-label>
-      <ion-input [(ngModel)]="textToAdd"></ion-input>
-    </div>
-  
-    <ion-button (click)="applyTextToImage()">Aplicar Nome</ion-button>
+    <ion-button class="button-edit" id="click-text">
+      <ion-icon name="text-outline"></ion-icon>
+    </ion-button>
+
+    <ion-popover trigger="click-text" triggerAction="click">
+      <ng-template>
+        <ion-content class="ion-padding" color="dark">
+          <ion-input [(ngModel)]="textToAdd" placeholder="Digite um nome"></ion-input>
+        </ion-content>
+        <ion-button (click)="applyTextToImage()">Aplicar Nome</ion-button>
+
+      </ng-template>
+
+    </ion-popover>
+
+    <ion-button class="button-edit">
+      <ion-icon name="expand-outline"></ion-icon>
+    </ion-button>
+    <ion-button class="button-edit">
+      <ion-icon name="text-outline"></ion-icon>
+    </ion-button>
+    <ion-button class="button-edit">
+      <ion-icon name="text-outline"></ion-icon>
+    </ion-button>
+    <ion-button class="button-edit">
+      <ion-icon name="text-outline"></ion-icon>
+    </ion-button>
   </div>
 
+  <!-- PREVIEW -->
+  <div #stageContainer class="canvas-container" (click)="deselectText()"></div>
 
 
-</ion-content>
+
+
+</main>
