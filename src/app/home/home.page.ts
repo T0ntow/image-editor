@@ -24,6 +24,12 @@ export class HomePage implements AfterViewInit {
   selectedTextColor: string = '#000000'; // Black color as defaul
 
   fontSize: number = 0;
+
+  selectedShape: Konva.Shape | undefined;
+
+  public color = 'rgba(48, 48, 48, 1)';
+
+
   constructor() { }
 
   ngAfterViewInit() {
@@ -56,7 +62,6 @@ export class HomePage implements AfterViewInit {
     this.layer.batchDraw();
   }
 
-
   fileChangeEvent(event: any): void {
     const file = event.target.files[0];
     const reader = new FileReader();
@@ -81,6 +86,7 @@ export class HomePage implements AfterViewInit {
         x: 300,
         y: 200,
         draggable: true,
+        resizeEnabled: true,
       });
 
       const text = new Konva.Text({
@@ -120,6 +126,7 @@ export class HomePage implements AfterViewInit {
         x: 200,
         y: 200,
         draggable: true,
+
       });
 
       text.on('click', () => {
@@ -134,15 +141,23 @@ export class HomePage implements AfterViewInit {
   }
 
   selectText = (text: Konva.Text) => {
-    this.deselectText();
-    this.selectedText = text;
-    this.selectedFontSize = text.fontSize();
-    this.selectedFontFamily = text.fontFamily();
-    this.selectedTextColor = text.fill();
-    this.layer?.batchDraw();
+    if(text) {
+      this.deselectText();
+      this.selectedText = text;
+
+      this.selectedFontSize = text.fontSize();
+      this.selectedFontFamily = text.fontFamily();
+      this.selectedTextColor = text.fill();
+      
+      // Adicione a cor desejada ao texto selecionado
+      text.fill('gray'); // Substitua 'your-desired-color' pela cor que você deseja
+    
+      this.layer?.batchDraw();
+    
+      console.log("selectText");
+    }
   }
   
-
   deselectText() {
     if (this.selectedText) {
       this.selectedText = undefined;
@@ -154,29 +169,26 @@ export class HomePage implements AfterViewInit {
     // Usando arrow function para preservar a referência correta ao 'this'
     const selectedText = this.selectedText;
     console.log('const selectedText', selectedText);
-    
+
     if (selectedText) {
       // Verifica se o valor da fonte é um número positivo antes de aplicar as mudanças
       if (this.selectedFontSize && this.selectedFontSize > 0) {
         selectedText.fontSize(this.selectedFontSize);
       }
-  
+
       // Verifica se o valor da cor é válido antes de aplicar as mudanças
       if (this.selectedTextColor && /^#[0-9A-F]{6}$/i.test(this.selectedTextColor)) {
         selectedText.fill(this.selectedTextColor);
       }
-  
+
       // Aplica a mudança da família da fonte
       if (this.selectedFontFamily) {
         selectedText.fontFamily(this.selectedFontFamily);
       }
-  
+
       this.layer?.batchDraw();
     }
   }
-  
-  
-  
 
   resizeImage() {
     if (this.image && this.imageWidth && this.imageHeight) {
@@ -194,4 +206,95 @@ export class HomePage implements AfterViewInit {
       this.layer?.batchDraw();
     }
   }
+
+  addSquare() {
+    const square = new Konva.Rect({
+      width: 100,
+      height: 100,
+      fill: 'blue',
+      x: 150,
+      y: 150,
+      draggable: true,
+      resizeEnabled: true,
+    });
+
+    square.on('click', () => {
+      this.selectShape(square);
+    });
+
+    this.layer?.add(square);
+    this.layer?.batchDraw();
+  }
+
+  addCircle() {
+    const circle = new Konva.Circle({
+      radius: 50,
+      fill: 'green',
+      x: 150,
+      y: 150,
+      draggable: true,
+    });
+
+    circle.on('click', () => {
+      this.selectShape(circle);
+    });
+
+    this.layer?.add(circle);
+    this.layer?.batchDraw();
+  }
+
+  addArrow() {
+    const arrow = new Konva.Arrow({
+      points: [0, 0, 100, 0],
+      pointerLength: 20,
+      pointerWidth: 20,
+      fill: 'red',
+      stroke: 'black',
+      strokeWidth: 2,
+      x: 250,
+      y: 250,
+      draggable: true,
+      resizeEnabled: true,
+    });
+
+    arrow.on('click', () => {
+      this.selectShape(arrow);
+    });
+
+    this.layer?.add(arrow);
+    this.layer?.batchDraw();
+  }
+
+  selectShape(shape: Konva.Shape) {
+    if (shape) {
+      this.unselectShape();
+      
+      this.selectedShape = shape;
+      const transformer = new Konva.Transformer({
+        nodes: [shape],
+        name: 'transformer' // Define o nome do transformer
+
+      });
+
+      console.log("selectShape");
+  
+      this.layer?.add(transformer);
+      this.layer?.batchDraw();
+    }
+  }
+
+  unselectShape() {
+    if (this.selectedShape) {
+      this.selectedShape = undefined;
+      console.log("unselectShape");
+      
+      const transformer = this.layer?.findOne('.transformer'); // Encontra o transformer pelo nome
+      if (transformer) {
+        transformer.destroy(); // Remove o transformer
+      }
+  
+      this.layer?.batchDraw(); // Atualiza o canvas
+    }
+  }
+  
 }

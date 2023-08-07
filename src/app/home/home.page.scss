@@ -30,7 +30,6 @@ ion-title {
   ion-button {
     --background: #3ca19b;
   }
-  
 }
 
 .canvas-container {
@@ -73,6 +72,7 @@ ion-title {
   gap: 15px;
 }
 
+
 #menu {
   display: flex;
   align-items: center;
@@ -97,11 +97,22 @@ ion-title {
   .button-edit {
     width: 70px;
     height: 60px;
-    --background:  #3ca19b;
+    --background: #3ca19b;
   }
-
-  .item {
-    display: flex;
-    flex-direction: column;
-  }
+ 
 }
+
+.item-shape {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  font-size: 1rem;
+}
+
+.item-shape:hover {
+  cursor: pointer;
+  transition: .3s;
+  background-color: #3ca19b;
+}
+

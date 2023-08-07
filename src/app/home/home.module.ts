@@ -9,13 +9,17 @@ import { HomePageRoutingModule } from './home-routing.module';
 
 import { NgxFileDropModule } from 'ngx-file-drop';
 
+//color picker
+import { ColorPickerModule } from 'ngx-color-picker';
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
     HomePageRoutingModule,
-    NgxFileDropModule
+    NgxFileDropModule,
+    ColorPickerModule
   ],
   declarations: [HomePage]
 })
