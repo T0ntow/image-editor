@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit, HostListener } from '@angular/core';
 import Konva from 'konva';
 
 @Component({
@@ -188,6 +188,8 @@ export class HomePage implements AfterViewInit {
     }
   }
 
+
+
   resizeImage() {
     if (this.image && this.imageWidth && this.imageHeight) {
       const imageWidth = parseInt(this.imageWidth.toString());
@@ -281,11 +283,17 @@ export class HomePage implements AfterViewInit {
     }
   }
 
+  @HostListener('document:keydown.enter', ['$event'])
+  handleEnterKey(event: KeyboardEvent): void {
+    // Verifica se a tecla pressionada foi "Enter"
+    if (event.key === 'Enter') {
+      this.unselectShape();
+    }
+  }
+  
   unselectShape() {
     if (this.selectedShape) {
       this.selectedShape = undefined;
-      console.log("unselectShape");
-      
       const transformer = this.layer?.findOne('.transformer'); // Encontra o transformer pelo nome
       if (transformer) {
         transformer.destroy(); // Remove o transformer
