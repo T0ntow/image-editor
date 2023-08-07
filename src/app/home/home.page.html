@@ -35,7 +35,7 @@
       </ion-item>
   
       <ion-item id="content-color">
-        <ion-input label="Color"  [(colorPicker)]="color" [style.background]="color"></ion-input>
+        <ion-input [(ngModel)]="selectedTextColor" (ionChange)="editTextAttrs()" label="Color"  [(colorPicker)]="selectedTextColor" [style.background]="color"></ion-input>
       </ion-item>
     </div>
     

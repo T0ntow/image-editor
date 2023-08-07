@@ -150,11 +150,7 @@ export class HomePage implements AfterViewInit {
       this.selectedTextColor = text.fill();
       
       // Adicione a cor desejada ao texto selecionado
-      text.fill('gray'); // Substitua 'your-desired-color' pela cor que você deseja
-    
       this.layer?.batchDraw();
-    
-      console.log("selectText");
     }
   }
   
@@ -179,6 +175,8 @@ export class HomePage implements AfterViewInit {
       // Verifica se o valor da cor é válido antes de aplicar as mudanças
       if (this.selectedTextColor && /^#[0-9A-F]{6}$/i.test(this.selectedTextColor)) {
         selectedText.fill(this.selectedTextColor);
+        console.log("text color");
+        console.log(this.selectedTextColor);
       }
 
       // Aplica a mudança da família da fonte
