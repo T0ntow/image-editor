@@ -65,11 +65,28 @@ ion-title {
 
   z-index: 100;
   left: 10vw;
-
   padding: 15px;
-  width: 100vw;
 
-  gap: 15px;
+
+  #content-edit-text {
+
+    #content-font-size {
+      width: 20%;
+    }
+
+    #content-color {
+      width: 25%;
+      z-index: 1001;
+    }
+  }
+
+  #content-edit-text, #content-edit-image {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+    gap: 20px;
+  }
 }
 
 

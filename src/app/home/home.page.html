@@ -18,8 +18,8 @@
   <!-- TOP MENU -->
 
   <div id="top-menu">
-    <ion-list>
-      <ion-item>
+    <div id="content-edit-text">
+      <ion-item id="content-font-size">
         <ion-label>Font Size</ion-label>
         <ion-input type="number" (change)="editTextAttrs()" [(ngModel)]="selectedFontSize"></ion-input>
       </ion-item>
@@ -34,13 +34,12 @@
         </ion-select>
       </ion-item>
   
-      <ion-item>
-        <ion-label>Text Color</ion-label>
-        <input [(colorPicker)]="color" [style.background]="color"/>
+      <ion-item id="content-color">
+        <ion-input label="Color"  [(colorPicker)]="color" [style.background]="color"></ion-input>
       </ion-item>
-    </ion-list>
+    </div>
     
-    <ion-list>
+    <div id="content-edit-image">
       <ion-item>
         <ion-label position="floating">Width (pixels)</ion-label>
         <ion-input type="number" [(ngModel)]="imageWidth"></ion-input>
@@ -50,7 +49,7 @@
         <ion-label position="floating">Height (pixels)</ion-label>
         <ion-input type="number" [(ngModel)]="imageHeight"></ion-input>
       </ion-item>
-    </ion-list>
+    </div>
     <!-- <ion-button (click)="editTextAttrs()">Aplicar</ion-button> -->
 
 
