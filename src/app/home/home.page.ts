@@ -22,13 +22,23 @@ export class HomePage implements AfterViewInit {
   selectedFontSize: number = 25;
   selectedFontFamily: string = 'Arial';
   selectedTextColor: string = '#000000'; // Black color as defaul
-
   fontSize: number = 0;
 
+  //shape
   selectedShape: Konva.Shape | undefined;
+  selectedShapeFill: string = '#000000';
+  selectedShapeStroke: string = '#000000';
 
-  public color = 'rgba(48, 48, 48, 1)';
+  //image
+  selectedImage: Konva.Image | undefined;
 
+  //pen
+  isPenActive: boolean = false;
+  strokeWidth: number = 5;
+  selectedPen: Konva.Line | undefined;
+  selectedPenStroke: string = '#000000';
+
+  // public colorShapeStroke = 'rgba(48, 48, 48, 1)'
 
   constructor() { }
 
@@ -39,13 +49,11 @@ export class HomePage implements AfterViewInit {
       height: this.stageContainer.nativeElement.clientHeight, // Define a altura do canvas
     });
 
-    // Atualiza o tamanho do canvas quando o contêiner for redimensionado
     window.addEventListener('resize', () => {
       this.stage?.width(this.stageContainer.nativeElement.clientWidth);
       this.stage?.height(this.stageContainer.nativeElement.clientHeight);
       this.stage?.batchDraw();
     });
-
 
     this.layer = new Konva.Layer();
     this.stage.add(this.layer);
@@ -126,7 +134,6 @@ export class HomePage implements AfterViewInit {
         x: 200,
         y: 200,
         draggable: true,
-
       });
 
       text.on('click', () => {
@@ -141,54 +148,25 @@ export class HomePage implements AfterViewInit {
   }
 
   selectText = (text: Konva.Text) => {
-    if(text) {
-      this.deselectText();
-      this.selectedText = text;
+    if (text) {
+      this.unselectedText();
+      this.unselectShape();
+      this.deactivatePenTool();
 
+      this.selectedText = text;
       this.selectedFontSize = text.fontSize();
       this.selectedFontFamily = text.fontFamily();
       this.selectedTextColor = text.fill();
-      
-      // Adicione a cor desejada ao texto selecionado
       this.layer?.batchDraw();
     }
   }
-  
-  deselectText() {
+
+  unselectedText() {
     if (this.selectedText) {
       this.selectedText = undefined;
       this.layer?.batchDraw();
     }
   }
-
-  editTextAttrs() {
-    // Usando arrow function para preservar a referência correta ao 'this'
-    const selectedText = this.selectedText;
-    console.log('const selectedText', selectedText);
-
-    if (selectedText) {
-      // Verifica se o valor da fonte é um número positivo antes de aplicar as mudanças
-      if (this.selectedFontSize && this.selectedFontSize > 0) {
-        selectedText.fontSize(this.selectedFontSize);
-      }
-
-      // Verifica se o valor da cor é válido antes de aplicar as mudanças
-      if (this.selectedTextColor && /^#[0-9A-F]{6}$/i.test(this.selectedTextColor)) {
-        selectedText.fill(this.selectedTextColor);
-        console.log("text color");
-        console.log(this.selectedTextColor);
-      }
-
-      // Aplica a mudança da família da fonte
-      if (this.selectedFontFamily) {
-        selectedText.fontFamily(this.selectedFontFamily);
-      }
-
-      this.layer?.batchDraw();
-    }
-  }
-
-
 
   resizeImage() {
     if (this.image && this.imageWidth && this.imageHeight) {
@@ -207,15 +185,56 @@ export class HomePage implements AfterViewInit {
     }
   }
 
+  editAttrs() {
+    const selectedText = this.selectedText;
+    const selectedShape = this.selectedShape;
+    const selectedPen = this.selectedPen;
+
+    if (selectedText) {
+      console.log("selectedText");
+      // Verifica se o valor da fonte é um número positivo antes de aplicar as mudanças
+      if (this.selectedFontSize && this.selectedFontSize > 0) {
+        selectedText.fontSize(this.selectedFontSize);
+      }
+
+      // Verifica se o valor da cor é válido antes de aplicar as mudanças
+      if (this.selectedTextColor && /^#[0-9A-F]{6}$/i.test(this.selectedTextColor)) {
+        selectedText.fill(this.selectedTextColor);
+      }
+
+      // Aplica a mudança da família da fonte
+      if (this.selectedFontFamily) {
+        selectedText.fontFamily(this.selectedFontFamily);
+      }
+
+      this.layer?.batchDraw();
+    } else if (selectedShape) {
+      // Verifica se o valor da cor é válido antes de aplicar as mudanças
+      if (this.selectedShapeFill && /^#[0-9A-F]{6}$/i.test(this.selectedShapeFill)) {
+        selectedShape.fill(this.selectedShapeFill);
+      }
+
+      selectedShape.stroke(this.selectedShapeStroke);
+
+      this.layer?.batchDraw();
+    } else if(this.isPenActive) {
+      selectedPen?.strokeWidth(this.strokeWidth);
+      selectedPen?.fill(this.selectedPenStroke);
+      this.layer?.batchDraw();
+
+    }
+  }
+
   addSquare() {
     const square = new Konva.Rect({
       width: 100,
       height: 100,
-      fill: 'blue',
+      fill: this.selectedShapeFill,
+      stroke: 'black', // Cor da borda
+      strokeWidth: 2,  // Largura da borda
       x: 150,
       y: 150,
       draggable: true,
-      resizeEnabled: true,
     });
 
     square.on('click', () => {
@@ -226,10 +245,13 @@ export class HomePage implements AfterViewInit {
     this.layer?.batchDraw();
   }
 
+
   addCircle() {
     const circle = new Konva.Circle({
       radius: 50,
-      fill: 'green',
+      // fill: 'green',
+      stroke: 'black', // Cor da borda
+      strokeWidth: 2,  // Largura da borda
       x: 150,
       y: 150,
       draggable: true,
@@ -248,7 +270,7 @@ export class HomePage implements AfterViewInit {
       points: [0, 0, 100, 0],
       pointerLength: 20,
       pointerWidth: 20,
-      fill: 'red',
+      // fill: 'red',
       stroke: 'black',
       strokeWidth: 2,
       x: 250,
@@ -268,39 +290,91 @@ export class HomePage implements AfterViewInit {
   selectShape(shape: Konva.Shape) {
     if (shape) {
       this.unselectShape();
-      
+      this.unselectedText();
+      this.deactivatePenTool();
+
       this.selectedShape = shape;
+
       const transformer = new Konva.Transformer({
         nodes: [shape],
         name: 'transformer' // Define o nome do transformer
-
       });
 
-      console.log("selectShape");
-  
       this.layer?.add(transformer);
       this.layer?.batchDraw();
     }
   }
 
-  @HostListener('document:keydown.enter', ['$event'])
-  handleEnterKey(event: KeyboardEvent): void {
-    // Verifica se a tecla pressionada foi "Enter"
-    if (event.key === 'Enter') {
+  @HostListener('document:keydown.escape', ['$event'])
+  handleEscapeKey(event: KeyboardEvent): void {
+    // Verifica se a tecla pressionada foi "Esc"
+    if (event.key === 'Escape') {
       this.unselectShape();
     }
   }
-  
+
   unselectShape() {
+    this.unselectedText();
+
     if (this.selectedShape) {
       this.selectedShape = undefined;
       const transformer = this.layer?.findOne('.transformer'); // Encontra o transformer pelo nome
       if (transformer) {
         transformer.destroy(); // Remove o transformer
       }
-  
+
       this.layer?.batchDraw(); // Atualiza o canvas
     }
   }
-  
+
+  activatePenTool() {
+    let isDrawing = false;
+    // let lastLine: Konva.Line | undefined;
+    let points: number[] = [];
+
+    this.unselectShape();
+    this.unselectedText();
+
+    this.isPenActive = true;
+
+
+    this.stage?.on('mousedown touchstart', (e) => {
+      isDrawing = true;
+      points = [e.evt.layerX, e.evt.layerY];
+
+      this.selectedPen = new Konva.Line({
+        stroke: this.selectedPenStroke, // Cor do desenho
+        strokeWidth: this.strokeWidth, // Largura do pincel
+        lineCap: 'round',
+        lineJoin: 'round',
+        points: [...points], // Cria uma cópia dos pontos
+        draggable: true,
+      });
+
+      this.layer?.add(this.selectedPen);
+    });
+
+    this.stage?.on('mousemove touchmove', (e) => {
+      if (!isDrawing || !this.selectedPen) {
+        return;
+      }
+      const newPoints = this.selectedPen.points().concat([e.evt.layerX, e.evt.layerY]);
+      this.selectedPen.points(newPoints);
+      this.layer?.batchDraw();
+    });
+
+    this.stage?.on('mouseup touchend', () => {
+      isDrawing = false;
+      points = [];
+      this.selectedPen = undefined; // Limpa a última linha
+    });
+  }
+
+  deactivatePenTool() {
+    this.isPenActive = false;
+    this.stage?.off('mousedown touchstart');
+    this.stage?.off('mousemove touchmove');
+    this.stage?.off('mouseup touchend');
+  }
+
 }

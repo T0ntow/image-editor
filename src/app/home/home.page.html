@@ -16,15 +16,15 @@
   <!-- TOP MENU -->
 
   <div id="top-menu">
-    <div id="content-edit-text">
+    <div id="content-edit-text" *ngIf="selectedText">
       <ion-item id="content-font-size">
         <ion-label>Font Size</ion-label>
-        <ion-input type="number" (change)="editTextAttrs()" [(ngModel)]="selectedFontSize"></ion-input>
+        <ion-input type="number" (change)="editAttrs()" [(ngModel)]="selectedFontSize"></ion-input>
       </ion-item>
   
       <ion-item>
         <ion-label>Font Family</ion-label>
-        <ion-select [(ngModel)]="selectedFontFamily" (ionChange)="editTextAttrs()">
+        <ion-select [(ngModel)]="selectedFontFamily" (ionChange)="editAttrs()">
           <ion-select-option value="Arial">Arial</ion-select-option>
           <ion-select-option value="Verdana">Verdana</ion-select-option>
           <ion-select-option value="Times New Roman">Times New Roman</ion-select-option>
@@ -33,11 +33,21 @@
       </ion-item>
   
       <ion-item id="content-color">
-        <ion-input [(ngModel)]="selectedTextColor" (ionChange)="editTextAttrs()" label="Color"  [(colorPicker)]="selectedTextColor" [style.background]="color"></ion-input>
+        <ion-input [(ngModel)]="selectedTextColor" (ionChange)="editAttrs()" label="Color"  [(colorPicker)]="selectedTextColor" [style.background]="selectedTextColor"></ion-input>
+      </ion-item>
+    </div>
+
+    <div id="content-edit-shape" *ngIf="selectedShape">
+      <ion-item id="shape-fill-color">
+        <ion-input [(ngModel)]="selectedShapeFill" (ionChange)="editAttrs()" label="Shape Fill Color" [(colorPicker)]="selectedShapeFill" [style.background]="selectedShapeFill"></ion-input>
+      </ion-item>
+
+      <ion-item id="shape-border-color">
+        <ion-input [(ngModel)]="selectedShapeStroke" (ionChange)="editAttrs()" label="Shape Border Color" [(colorPicker)]="selectedShapeStroke" [style.background]="selectedShapeStroke"></ion-input>
       </ion-item>
     </div>
     
-    <div id="content-edit-image">
+    <div id="content-edit-image" *ngIf="selectedImage">
       <ion-item>
         <ion-label position="floating">Width (pixels)</ion-label>
         <ion-input type="number" [(ngModel)]="imageWidth"></ion-input>
@@ -47,15 +57,28 @@
         <ion-label position="floating">Height (pixels)</ion-label>
         <ion-input type="number" [(ngModel)]="imageHeight"></ion-input>
       </ion-item>
+
+      <ion-button class="button-edit" (click)="resizeImage()">Resize Image</ion-button>
     </div>
-    <!-- <ion-button (click)="editTextAttrs()">Aplicar</ion-button> -->
 
-
-    <ion-button class="button-edit" (click)="resizeImage()">Resize Image</ion-button>
+    <div id="content-edit-pen" *ngIf="isPenActive">
+      <ion-item>
+        <ion-input type="number" [(ngModel)]="strokeWidth"  (ionChange)="editAttrs()" label="strokeWidth (pixels)"></ion-input>
+      </ion-item>
+  
+      <ion-item>
+        <ion-input [(ngModel)]="selectedPenStroke" (ionChange)="editAttrs()" label="Pen Color" [(colorPicker)]="selectedPenStroke" [style.background]="selectedPenStroke"></ion-input>
+      </ion-item>
+    </div>
   </div>
 
   <!-- LATERAL MENU -->
   <div id="menu">
+
+    <ion-button class="button-edit" (click)="deactivatePenTool()" [ngClass]="{'active': !isPenActive}">
+      <ion-icon name="navigate-outline"></ion-icon>
+    </ion-button>
+
     <ion-button class="button-edit" id="click-text">
       <ion-icon name="text-outline"></ion-icon>
     </ion-button>
@@ -66,9 +89,7 @@
           <ion-input [(ngModel)]="textToAdd" placeholder="Digite um nome"></ion-input>
         </ion-content>
         <ion-button (click)="applyTextToImage()">Aplicar Nome</ion-button>
-
       </ng-template>
-
     </ion-popover>
 
     <!--  -->
@@ -97,21 +118,12 @@
 
     <!--  -->
 
-    <ion-button class="button-edit">
-      <ion-icon name="text-outline"></ion-icon>
-    </ion-button>
-    <ion-button class="button-edit">
-      <ion-icon name="text-outline"></ion-icon>
-    </ion-button>
-    <ion-button class="button-edit">
-      <ion-icon name="text-outline"></ion-icon>
+    <ion-button class="button-edit" (click)="activatePenTool()" [ngClass]="{'active': isPenActive}">
+      <ion-icon name="pencil-outline"></ion-icon>
     </ion-button>
   </div>
 
   <!-- PREVIEW -->
   <div #stageContainer class="canvas-container"></div>
-
-
-
 
 </main>

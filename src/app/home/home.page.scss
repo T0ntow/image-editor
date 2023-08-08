@@ -62,11 +62,11 @@ ion-title {
 
   background-color: #272727;
   border-bottom: 5px solid #3ca19b;
-
   z-index: 100;
   left: 10vw;
   padding: 15px;
-
+  height: 10vh;
+  width: 100vw;
 
   #content-edit-text {
 
@@ -80,15 +80,15 @@ ion-title {
     }
   }
 
-  #content-edit-text, #content-edit-image {
+  #content-edit-text, #content-edit-image, #content-edit-shape, #content-edit-pen {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: flex-start;
+    width: 100%;
 
-    gap: 20px;
+    gap: 10px;
   }
 }
-
 
 #menu {
   display: flex;
@@ -117,6 +117,11 @@ ion-title {
     --background: #3ca19b;
   }
  
+  .active {
+    --background: #44fef2 !important;
+    color: black;
+  }
+
 }
 
 .item-shape {
