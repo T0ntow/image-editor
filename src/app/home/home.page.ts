@@ -14,9 +14,6 @@ export class HomePage implements AfterViewInit {
   image: Konva.Image | undefined;
   imageObj: HTMLImageElement | undefined;
 
-  imageWidth: number = 0;
-  imageHeight: number = 0;
-
   textToAdd: string = '';
   selectedText: Konva.Text | undefined;
   selectedFontSize: number = 25;
@@ -31,6 +28,8 @@ export class HomePage implements AfterViewInit {
 
   //image
   selectedImage: Konva.Image | undefined;
+  imageWidth: number = 0;
+  imageHeight: number = 0;
 
   //pen
   isPenActive: boolean = false;
@@ -249,7 +248,6 @@ export class HomePage implements AfterViewInit {
   addCircle() {
     const circle = new Konva.Circle({
       radius: 50,
-      // fill: 'green',
       stroke: 'black', // Cor da borda
       strokeWidth: 2,  // Largura da borda
       x: 150,
@@ -270,7 +268,6 @@ export class HomePage implements AfterViewInit {
       points: [0, 0, 100, 0],
       pointerLength: 20,
       pointerWidth: 20,
-      // fill: 'red',
       stroke: 'black',
       strokeWidth: 2,
       x: 250,
@@ -302,6 +299,26 @@ export class HomePage implements AfterViewInit {
 
       this.layer?.add(transformer);
       this.layer?.batchDraw();
+    }
+  }
+
+  removeFill() {
+    const selectedShape = this.selectedShape;
+
+    if(selectedShape) {
+      selectedShape.fill('transparent')
+      this.layer?.batchDraw();
+    }
+  }
+
+  removeEdge() {
+    const selectedShape = this.selectedShape;
+
+    if(selectedShape) {
+      selectedShape.stroke('transparent')
+      selectedShape.strokeWidth(0);        
+      this.layer?.batchDraw();
+
     }
   }
 
@@ -348,7 +365,6 @@ export class HomePage implements AfterViewInit {
         lineCap: 'round',
         lineJoin: 'round',
         points: [...points], // Cria uma cópia dos pontos
-        draggable: true,
       });
 
       this.layer?.add(this.selectedPen);

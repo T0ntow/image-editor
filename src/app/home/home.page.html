@@ -45,6 +45,10 @@
       <ion-item id="shape-border-color">
         <ion-input [(ngModel)]="selectedShapeStroke" (ionChange)="editAttrs()" label="Shape Border Color" [(colorPicker)]="selectedShapeStroke" [style.background]="selectedShapeStroke"></ion-input>
       </ion-item>
+
+      <ion-button (click)="removeFill()">Remover Preenchimento</ion-button>
+      <ion-button (click)="removeEdge()">Remover Borda</ion-button>
+
     </div>
     
     <div id="content-edit-image" *ngIf="selectedImage">
