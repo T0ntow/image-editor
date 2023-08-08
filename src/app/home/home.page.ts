@@ -36,36 +36,25 @@ export class HomePage implements AfterViewInit {
   strokeWidth: number = 5;
   selectedPen: Konva.Line | undefined;
   selectedPenStroke: string = '#000000';
+  isEraserActive: boolean = false;
+  selectedEraser: any;
 
   // public colorShapeStroke = 'rgba(48, 48, 48, 1)'
 
   constructor() { }
 
   ngAfterViewInit() {
+
     this.stage = new Konva.Stage({
       container: this.stageContainer.nativeElement,
-      width: this.stageContainer.nativeElement.clientWidth, // Define a largura do canvas
-      height: this.stageContainer.nativeElement.clientHeight, // Define a altura do canvas
+      width: window.innerWidth * 0.9,
+      height: window.innerHeight * 0.9, // Defina a altura como 90% da altura da janela (viewport)
     });
-
-    window.addEventListener('resize', () => {
-      this.stage?.width(this.stageContainer.nativeElement.clientWidth);
-      this.stage?.height(this.stageContainer.nativeElement.clientHeight);
-      this.stage?.batchDraw();
-    });
+    
 
     this.layer = new Konva.Layer();
     this.stage.add(this.layer);
-    // Adiciona um retângulo como background
-    const backgroundRect = new Konva.Rect({
-      x: 0,
-      y: 0,
-      width: this.stage.width(),
-      height: this.stage.height(),
-      fill: 'lightgray', // Define a cor do background
-    });
 
-    this.layer.add(backgroundRect);
     this.layer.batchDraw();
   }
 
@@ -290,7 +279,7 @@ export class HomePage implements AfterViewInit {
     if (shape) {
       this.unselectShape();
       this.unselectedText();
-      this.deactivatePenTool();
+      // this.deactivatePenTool();
 
       this.selectedShape = shape;
 
@@ -348,14 +337,13 @@ export class HomePage implements AfterViewInit {
 
   activatePenTool() {
     let isDrawing = false;
-    // let lastLine: Konva.Line | undefined;
     let points: number[] = [];
 
     this.unselectShape();
     this.unselectedText();
+    this.deactivateEraserTool();
 
     this.isPenActive = true;
-
 
     this.stage?.on('mousedown touchstart', (e) => {
       isDrawing = true;
@@ -388,6 +376,63 @@ export class HomePage implements AfterViewInit {
     });
   }
 
+  activateEraserTool() {
+    let isErasing = false;
+    let points: number[] = [];
+
+    this.deactivatePenTool();
+    this.unselectShape();
+    this.unselectedText();
+  
+    this.isEraserActive = true;
+
+    console.log("activateEraserTool");
+    
+    this.stage?.on('mousedown touchstart', (e) => {
+      isErasing = true;
+      points = [e.evt.layerX, e.evt.layerY];
+  
+      // Create a temporary transparent eraser line with the same properties as the pen
+      this.selectedEraser = new Konva.Line({
+        stroke: 'lightgray', // Transparent stroke for erasing
+        strokeWidth: 10,
+        lineCap: 'round',
+        lineJoin: 'round',
+        points: [...points],
+        globalCompositeOperation: 'destination-out', // Use "destination-out" to erase
+      });
+  
+      this.layer?.add(this.selectedEraser);
+    });
+  
+    this.stage?.on('mousemove touchmove', (e) => {
+      if (!isErasing || !this.selectedEraser) {
+        return;
+      }
+      const newPoints = this.selectedEraser.points().concat([e.evt.layerX, e.evt.layerY]);
+      this.selectedEraser.points(newPoints);
+      this.layer?.batchDraw();
+    });
+  
+    this.stage?.on('mouseup touchend', () => {
+      isErasing = false;
+      points = [];
+      this.selectedEraser = undefined; // Clear the eraser line
+    });
+  }
+
+  desativeTool() {
+    this.deactivatePenTool();
+    this.deactivateEraserTool();
+  }
+
+  deactivateEraserTool() {
+    this.isEraserActive = false;
+    this.stage?.off('mousedown touchstart');
+    this.stage?.off('mousemove touchmove');
+    this.stage?.off('mouseup touchend');
+  }
+  
   deactivatePenTool() {
     this.isPenActive = false;
     this.stage?.off('mousedown touchstart');
