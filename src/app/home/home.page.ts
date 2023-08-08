@@ -23,7 +23,7 @@ export class HomePage implements AfterViewInit {
 
   //shape
   selectedShape: Konva.Shape | undefined;
-  selectedShapeFill: string = '#000000';
+  selectedShapeFill: string = 'transparent';
   selectedShapeStroke: string = '#000000';
 
   //image
@@ -229,7 +229,7 @@ export class HomePage implements AfterViewInit {
       width: 100,
       height: 100,
       fill: this.selectedShapeFill,
-      stroke: 'black', // Cor da borda
+      stroke: this.selectedShapeStroke, // Cor da borda
       strokeWidth: 2,  // Largura da borda
       x: 150,
       y: 150,
@@ -248,7 +248,8 @@ export class HomePage implements AfterViewInit {
   addCircle() {
     const circle = new Konva.Circle({
       radius: 50,
-      stroke: 'black', // Cor da borda
+      fill: this.selectedShapeFill,
+      stroke: this.selectedShapeStroke, // Cor da borda
       strokeWidth: 2,  // Largura da borda
       x: 150,
       y: 150,
@@ -268,7 +269,8 @@ export class HomePage implements AfterViewInit {
       points: [0, 0, 100, 0],
       pointerLength: 20,
       pointerWidth: 20,
-      stroke: 'black',
+      fill: this.selectedShapeFill,
+      stroke: this.selectedShapeStroke,
       strokeWidth: 2,
       x: 250,
       y: 250,
