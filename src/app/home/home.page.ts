@@ -139,7 +139,7 @@ export class HomePage implements AfterViewInit {
     if (text) {
       this.unselectedText();
       this.unselectShape();
-      this.deactivatePenTool();
+      this.desativeTool();
 
       this.selectedText = text;
       this.selectedFontSize = text.fontSize();
@@ -214,6 +214,8 @@ export class HomePage implements AfterViewInit {
   }
 
   addSquare() {
+    this.desativeTool();
+    
     const square = new Konva.Rect({
       width: 100,
       height: 100,
@@ -235,6 +237,8 @@ export class HomePage implements AfterViewInit {
 
 
   addCircle() {
+    this.desativeTool();
+
     const circle = new Konva.Circle({
       radius: 50,
       fill: this.selectedShapeFill,
@@ -254,6 +258,8 @@ export class HomePage implements AfterViewInit {
   }
 
   addArrow() {
+    this.desativeTool();
+
     const arrow = new Konva.Arrow({
       points: [0, 0, 100, 0],
       pointerLength: 20,
@@ -279,6 +285,8 @@ export class HomePage implements AfterViewInit {
     if (shape) {
       this.unselectShape();
       this.unselectedText();
+      this.desativeTool();
+
       // this.deactivatePenTool();
 
       this.selectedShape = shape;

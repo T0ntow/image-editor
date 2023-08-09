@@ -3,15 +3,6 @@
 </style>
 
 <main>
-  <ion-header id="header">
-    <h1>Faça upload de uma imagem para começar</h1>
-    <ion-button (click)="fileInput.click()">
-      Selecionar Imagem
-    </ion-button>
-
-    <input type="file" style="display: none" accept="image/*" #fileInput (change)="fileChangeEvent($event)" />
-
-  </ion-header>
 
   <!-- TOP MENU -->
 
@@ -77,8 +68,8 @@
   </div>
 
   <!-- LATERAL MENU -->
-  <div id="menu">
 
+  <div id="menu">
     <ion-button class="button-edit" (click)="desativeTool()" [ngClass]="{'active': !isPenActive && !isEraserActive}">
       <ion-icon name="navigate-outline"></ion-icon>
     </ion-button>
@@ -130,6 +121,10 @@
       <ion-icon name="close-circle-outline"></ion-icon>
     </ion-button>
 
+    <ion-button class="button-edit" (click)="fileInput.click()">
+      <ion-icon name="cloud-upload-outline"></ion-icon>
+      <input type="file" style="display: none" accept="image/*" #fileInput (change)="fileChangeEvent($event)"/>
+    </ion-button>
   </div>
 
   <!-- PREVIEW -->
