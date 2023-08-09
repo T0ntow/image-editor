@@ -6,13 +6,16 @@
 
   <!-- TOP MENU -->
 
+  
+
+
   <div id="top-menu">
     <div id="content-edit-text" *ngIf="selectedText">
       <ion-item id="content-font-size">
         <ion-label>Font Size</ion-label>
         <ion-input type="number" (change)="editAttrs()" [(ngModel)]="selectedFontSize"></ion-input>
       </ion-item>
-  
+
       <ion-item>
         <ion-label>Font Family</ion-label>
         <ion-select [(ngModel)]="selectedFontFamily" (ionChange)="editAttrs()">
@@ -22,47 +25,52 @@
           <!-- Adicione outras opções de fonte aqui -->
         </ion-select>
       </ion-item>
-  
+
       <ion-item id="content-color">
-        <ion-input [(ngModel)]="selectedTextColor" (ionChange)="editAttrs()" label="Color"  [(colorPicker)]="selectedTextColor" [style.background]="selectedTextColor"></ion-input>
+        <ion-input [(ngModel)]="selectedTextColor" (ionChange)="editAttrs()" label="Color"
+          [(colorPicker)]="selectedTextColor" [style.background]="selectedTextColor"></ion-input>
       </ion-item>
     </div>
 
     <div id="content-edit-shape" *ngIf="selectedShape">
       <ion-item id="shape-fill-color">
-        <ion-input [(ngModel)]="selectedShapeFill" (ionChange)="editAttrs()" label="Shape Fill Color" [(colorPicker)]="selectedShapeFill" [style.background]="selectedShapeFill"></ion-input>
+        <ion-input [(ngModel)]="selectedShapeFill" (ionChange)="editAttrs()" label="Shape Fill Color"
+          [(colorPicker)]="selectedShapeFill" [style.background]="selectedShapeFill"></ion-input>
       </ion-item>
 
       <ion-item id="shape-border-color">
-        <ion-input [(ngModel)]="selectedShapeStroke" (ionChange)="editAttrs()" label="Shape Border Color" [(colorPicker)]="selectedShapeStroke" [style.background]="selectedShapeStroke"></ion-input>
+        <ion-input [(ngModel)]="selectedShapeStroke" (ionChange)="editAttrs()" label="Shape Border Color"
+          [(colorPicker)]="selectedShapeStroke" [style.background]="selectedShapeStroke"></ion-input>
       </ion-item>
 
       <ion-button (click)="removeFill()">Remover Preenchimento</ion-button>
       <ion-button (click)="removeEdge()">Remover Borda</ion-button>
 
     </div>
-    
+
     <div id="content-edit-image" *ngIf="selectedImage">
       <ion-item>
         <ion-label position="floating">Width (pixels)</ion-label>
         <ion-input type="number" [(ngModel)]="imageWidth"></ion-input>
       </ion-item>
-  
+
       <ion-item>
         <ion-label position="floating">Height (pixels)</ion-label>
         <ion-input type="number" [(ngModel)]="imageHeight"></ion-input>
       </ion-item>
 
-      <ion-button class="button-edit" (click)="resizeImage()">Resize Image</ion-button>
+      <ion-button class="icon-menu" (click)="resizeImage()">Resize Image</ion-button>
     </div>
 
     <div id="content-edit-pen" *ngIf="isPenActive">
       <ion-item>
-        <ion-input type="number" [(ngModel)]="strokeWidth"  (ionChange)="editAttrs()" label="strokeWidth (pixels)"></ion-input>
+        <ion-input type="number" [(ngModel)]="strokeWidth" (ionChange)="editAttrs()"
+          label="strokeWidth (pixels)"></ion-input>
       </ion-item>
-  
+
       <ion-item>
-        <ion-input [(ngModel)]="selectedPenStroke" (ionChange)="editAttrs()" label="Pen Color" [(colorPicker)]="selectedPenStroke" [style.background]="selectedPenStroke"></ion-input>
+        <ion-input [(ngModel)]="selectedPenStroke" (ionChange)="editAttrs()" label="Pen Color"
+          [(colorPicker)]="selectedPenStroke" [style.background]="selectedPenStroke"></ion-input>
       </ion-item>
     </div>
   </div>
@@ -70,61 +78,86 @@
   <!-- LATERAL MENU -->
 
   <div id="menu">
-    <ion-button class="button-edit" (click)="desativeTool()" [ngClass]="{'active': !isPenActive && !isEraserActive}">
-      <ion-icon name="navigate-outline"></ion-icon>
-    </ion-button>
+    <ul>
+      <li class="item-menu" (click)="desativeTool()">
+        <div class="icon-menu" [ngClass]="{'active': !isPenActive && !isEraserActive}">
+          <ion-icon name="navigate-outline" class="icon"></ion-icon>
+        </div>
 
-    <ion-button class="button-edit" id="click-text">
-      <ion-icon name="text-outline"></ion-icon>
-    </ion-button>
+        <p>Select</p>
+      </li>
 
-    <ion-popover trigger="click-text" triggerAction="click">
-      <ng-template>
-        <ion-content class="ion-padding" color="dark">
-          <ion-input [(ngModel)]="textToAdd" placeholder="Digite um nome"></ion-input>
-        </ion-content>
-        <ion-button (click)="applyTextToImage()">Aplicar Nome</ion-button>
-      </ng-template>
-    </ion-popover>
+      <li class="item-menu" id="click-text">
+        <div class="icon-menu">
+          <ion-icon name="text-outline" class="icon"></ion-icon>
+        </div>
 
-    <!--  -->
-    <ion-button class="button-edit"  id="click-shape">
-      <ion-icon name="square-outline"></ion-icon>
-    </ion-button>
-    
-    <ion-popover trigger="click-shape" triggerAction="click">
-      <ng-template>
-        <ion-content class="ion-padding" color="dark">
-          <div class="item-shape" (click)="addSquare()">
-            <ion-label>Quadrado</ion-label>
-            <ion-icon name="square-outline"></ion-icon>
-          </div>
-          <div class="item-shape" (click)="addCircle()">
-            <ion-label>Círculo</ion-label>
-            <ion-icon name="radio-button-off-outline"></ion-icon>
-          </div>
-          <div class="item-shape" (click)="addArrow()">
-            <ion-label>Flecha</ion-label>
-            <ion-icon name="arrow-forward-outline"></ion-icon>          
-          </div>
-        </ion-content>
-      </ng-template>
-    </ion-popover>
+        <p>Text</p>
+      </li>
 
-    <!--  -->
+      <ion-popover trigger="click-text" triggerAction="click">
+        <ng-template>
+          <ion-content class="ion-padding" color="dark">
+            <ion-input [(ngModel)]="textToAdd" placeholder="Digite um nome"></ion-input>
+          </ion-content>
+          <ion-button (click)="applyTextToImage()">Aplicar Nome</ion-button>
+        </ng-template>
+      </ion-popover>
 
-    <ion-button class="button-edit" (click)="activatePenTool()" [ngClass]="{'active': isPenActive}">
-      <ion-icon name="pencil-outline"></ion-icon>
-    </ion-button>
+      <li class="item-menu" id="click-shape">
+        <div class="icon-menu">
+          <ion-icon name="square-outline" class="icon"></ion-icon>
+        </div>
 
-    <ion-button class="button-edit" (click)="activateEraserTool()" [ngClass]="{'active': isEraserActive}">
-      <ion-icon name="close-circle-outline"></ion-icon>
-    </ion-button>
+        <p>Elements</p>
+      </li>
 
-    <ion-button class="button-edit" (click)="fileInput.click()">
-      <ion-icon name="cloud-upload-outline"></ion-icon>
-      <input type="file" style="display: none" accept="image/*" #fileInput (change)="fileChangeEvent($event)"/>
-    </ion-button>
+      <ion-popover trigger="click-shape" triggerAction="click">
+        <ng-template>
+          <ion-content class="ion-padding" color="dark">
+            <div class="item-shape" (click)="addSquare()">
+              <ion-label>Quadrado</ion-label>
+              <ion-icon name="square-outline"></ion-icon>
+            </div>
+            <div class="item-shape" (click)="addCircle()">
+              <ion-label>Círculo</ion-label>
+              <ion-icon name="radio-button-off-outline"></ion-icon>
+            </div>
+            <div class="item-shape" (click)="addArrow()">
+              <ion-label>Flecha</ion-label>
+              <ion-icon name="arrow-forward-outline"></ion-icon>
+            </div>
+          </ion-content>
+        </ng-template>
+      </ion-popover>
+
+      <li class="item-menu" (click)="activatePenTool()"> 
+        <div class="icon-menu" [ngClass]="{'active': isPenActive}">
+          <ion-icon name="pencil-outline" class="icon"></ion-icon>
+        </div>
+
+        <p>Pen</p>
+      </li>
+  
+      <li class="item-menu" (click)="activateEraserTool()" >
+        <div class="icon-menu" [ngClass]="{'active': isEraserActive}">
+          <ion-icon name="close-circle-outline" class="icon"></ion-icon>
+        </div>
+        
+        <p>Eraser</p>
+      </li>
+  
+      <li class="item-menu" (click)="fileInput.click()">
+        <div class="icon-menu">
+          <ion-icon name="cloud-upload-outline" class="icon"></ion-icon>
+          <input type="file" style="display: none" accept="image/*" #fileInput (change)="fileChangeEvent($event)" />
+        </div>
+
+        <p>Upload</p>
+      </li>
+
+    </ul>
+  
   </div>
 
   <!-- PREVIEW -->

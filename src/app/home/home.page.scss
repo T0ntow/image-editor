@@ -33,36 +33,25 @@ ion-title {
 }
 
 .canvas-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   position: absolute;
-
-  left: 5vw;
-  right: 0;
-  top: 5vh;
-  bottom: 0;
-
-  background-color: #3ca19a43;
-
-  width: 100%;
-  height: 100vh;
-
+  left: 250px;
+  background-color: rgba(60, 161, 154, 0.262745098);
 }
 
 #top-menu {
   display: flex;
   align-items: center;
   flex-direction: row;
-  position: absolute;
 
   background-color: #272727;
   border-bottom: 5px solid #3ca19b;
   z-index: 100;
-  left: 10vw;
+  left: 250px;
   padding: 15px;
   height: 10vh;
-  width: 100vw;
+  width: 100%;
+  float: right;
+  position: absolute;
 
   #content-edit-text {
 
@@ -87,35 +76,58 @@ ion-title {
 }
 
 #menu {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  position: absolute;
-
-  left: 0%;
-  margin: 0px auto;
+  float: left;
+  width: 250px;
+  height: 100vh;
+  padding: 8px;
 
   background-color: #272727;
-  z-index: 100;
-
-  width: 10vw;
-  min-width: 10vw;
-  height: 100%;
-  padding: 15px;
-
   border-right: 5px solid #3ca19b;
+  position: absolute;
 
-  gap: 15px;
+  ul {
+    padding: 0;
+    margin: 0;
 
-  .button-edit {
-    width: 70px;
-    height: 60px;
-    --background: #3ca19b;
-  }
- 
-  .active {
-    --background: #44fef2 !important;
-    color: black;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 15px;
+
+    .item-menu {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      width: 100%;
+      padding: 5px;
+  
+      .icon-menu {
+        width: 40px;
+        height: 40px;
+        margin-right: 15px;
+        background-color: #3ca19b;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 5px;
+    
+        .icon {
+         min-width: 25px;
+         min-height: 25px;
+        }
+      }
+     
+      .active {
+        background-color: #44fef2 !important;
+        color: black;
+      }
+    }
+
+    .item-menu:hover {
+      transition: .2s;
+      background-color: #1c1c1c;
+    }
   }
 
 }

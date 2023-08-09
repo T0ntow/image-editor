@@ -47,8 +47,8 @@ export class HomePage implements AfterViewInit {
 
     this.stage = new Konva.Stage({
       container: this.stageContainer.nativeElement,
-      width: window.innerWidth * 0.9,
-      height: window.innerHeight * 0.9, // Defina a altura como 90% da altura da janela (viewport)
+      width: window.innerWidth,
+      height: window.innerHeight,
     });
     
 
